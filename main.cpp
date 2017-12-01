@@ -162,13 +162,13 @@ int tune_L3_moment_int =10;///100 = 0.0999f
 #ifdef USE_MNIST
 int L1_noise_int = 25;///25 = 25%
 int L2_noise_int = 2;
-int L3_noise_int = 1;
-int tune_L1_int = 20;///20 = 0.002f
-int tune_L2_int = 20;///2 = 0.0002f
-int tune_L3_int = 20;///2 = 0.0002f
+int L3_noise_int = 0;
+int tune_L1_int = 100;///20 = 0.002f
+int tune_L2_int = 4;///2 = 0.0002f
+int tune_L3_int = 0;///2 = 0.0002f
 int tune_L1_moment_int =100;///1000 = 0.999f
-int tune_L2_moment_int =10;///100 = 0.0999f
-int tune_L3_moment_int =10;///100 = 0.0999f
+int tune_L2_moment_int =0;///100 = 0.0999f
+int tune_L3_moment_int =0;///100 = 0.0999f
 #endif // USE_MNIST
 #ifdef USE_CIFAR
 int L1_noise_int = 25;///25 = 25%
