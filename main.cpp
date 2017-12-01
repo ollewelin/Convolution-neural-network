@@ -1,5 +1,6 @@
 ///2017-11-30 Add fine tune L2 through backpropagation from fc fully connected network. Yet only test with L2_pool_cobe connected to fc, not tested unpooled connectiotion to fc
 ///Now also Tested on PC with ubuntu
+///Test here with MNIST dataset
 #include <opencv2/highgui/highgui.hpp>  // OpenCV window I/O
 #include <opencv2/imgproc/imgproc.hpp> // Gaussian Blur
 #include <stdio.h>
@@ -16,7 +17,7 @@ using namespace cv;
 #include "c_func.h"
 #include "cpp_func.hpp"
 #include "cpp_func2.hpp"
-
+#include <time.h> ///usleep()
 ///Add standard deviation of the all data after each Relu and use that value as the noise amplitude to each Autoencoder
 #define USE_STD_DEVIATION_FOR_NOISE_AMPLITUDE
 #ifdef USE_STD_DEVIATION_FOR_NOISE_AMPLITUDE
@@ -1614,24 +1615,27 @@ int main()
                     index_ptr_L1_patch_img++;
                 }
 
-                ///make the backpropagation
                 index_ptr_L1_autoenc_delta = zero_ptr_L1_autoenc_delta;
-                ///First update the bias weights
-                for(int j=0; j<L1_conv_depth; j++)
+                if(comon_func_Obj1.started == 1)
                 {
-                    /// **** update tied weight regarding delta
-                    L1_change_weight_M[FL1_size][j] = L1_LearningRate * L1_conv_cube[0][j] * bias_delta + L1_Momentum * L1_change_weight_M[FL1_size][j];///hidden_node = L1_conv_cube[0][j];
-                    L1_weight_matrix_M[FL1_size][j] += L1_change_weight_M[FL1_size][j];
-                }
-                for(int i=0; i<FL1_size; i++)///
-                {
+                    ///make the backpropagation
+                    ///First update the bias weights
                     for(int j=0; j<L1_conv_depth; j++)
                     {
                         /// **** update tied weight regarding delta
-                        L1_change_weight_M[i][j] = L1_LearningRate * L1_conv_cube[0][j] * (*index_ptr_L1_autoenc_delta) + L1_Momentum * L1_change_weight_M[i][j];///hidden_node = L1_conv_cube[0][j];
-                        L1_weight_matrix_M[i][j] += L1_change_weight_M[i][j];
+                        L1_change_weight_M[FL1_size][j] = L1_LearningRate * L1_conv_cube[0][j] * bias_delta + L1_Momentum * L1_change_weight_M[FL1_size][j];///hidden_node = L1_conv_cube[0][j];
+                        L1_weight_matrix_M[FL1_size][j] += L1_change_weight_M[FL1_size][j];
                     }
-                    index_ptr_L1_autoenc_delta++;
+                    for(int i=0; i<FL1_size; i++)///
+                    {
+                        for(int j=0; j<L1_conv_depth; j++)
+                        {
+                            /// **** update tied weight regarding delta
+                            L1_change_weight_M[i][j] = L1_LearningRate * L1_conv_cube[0][j] * (*index_ptr_L1_autoenc_delta) + L1_Momentum * L1_change_weight_M[i][j];///hidden_node = L1_conv_cube[0][j];
+                            L1_weight_matrix_M[i][j] += L1_change_weight_M[i][j];
+                        }
+                        index_ptr_L1_autoenc_delta++;
+                    }
                 }
                 ///Print Loss
                 static int print_loss=0;
@@ -1961,23 +1965,26 @@ int main()
                         L2_autoenc_delta[i][j] = L2_delta;
                     }
                 }
-                ///make the backpropagation
-                ///First update the bias weights
-                for(int k=0; k<L2_conv_depth; k++)
+                if(comon_func_Obj1.started == 1)
                 {
-                    /// **** update tied weight regarding delta
-                    L2_change_weight_M[FL2_size][k] = L2_LearningRate * L2_conv_cube[0][k] * bias_delta + L2_Momentum * L2_change_weight_M[FL2_size][k];///hidden_node = L1_conv_cube[0][j];
-                    L2_weight_matrix_M[FL2_size][k] += L2_change_weight_M[FL2_size][k];
-                }
-                for(int k=0; k<L2_conv_depth; k++)
-                {
-                    for(int j=0; j<FL2_depth; j++)
+                    ///make the backpropagation
+                    ///First update the bias weights
+                    for(int k=0; k<L2_conv_depth; k++)
                     {
-                        for(int i=0; i<(FL2_srt_size * FL2_srt_size); i++)
+                        /// **** update tied weight regarding delta
+                        L2_change_weight_M[FL2_size][k] = L2_LearningRate * L2_conv_cube[0][k] * bias_delta + L2_Momentum * L2_change_weight_M[FL2_size][k];///hidden_node = L1_conv_cube[0][j];
+                        L2_weight_matrix_M[FL2_size][k] += L2_change_weight_M[FL2_size][k];
+                    }
+                    for(int k=0; k<L2_conv_depth; k++)
+                    {
+                        for(int j=0; j<FL2_depth; j++)
                         {
-                            /// **** update tied weight regarding delta
-                            L2_change_weight_M[i + (FL2_srt_size * FL2_srt_size)*j][k] = L2_LearningRate * L2_conv_cube[0][k] * (L2_autoenc_delta[i][j]) + L2_Momentum * L2_change_weight_M[i + (FL2_srt_size * FL2_srt_size)*j][k];///hidden_node = L1_conv_cube[0][j];
-                            L2_weight_matrix_M[i + (FL2_srt_size * FL2_srt_size)*j][k] += L2_change_weight_M[i + (FL2_srt_size * FL2_srt_size)*j][k];
+                            for(int i=0; i<(FL2_srt_size * FL2_srt_size); i++)
+                            {
+                                /// **** update tied weight regarding delta
+                                L2_change_weight_M[i + (FL2_srt_size * FL2_srt_size)*j][k] = L2_LearningRate * L2_conv_cube[0][k] * (L2_autoenc_delta[i][j]) + L2_Momentum * L2_change_weight_M[i + (FL2_srt_size * FL2_srt_size)*j][k];///hidden_node = L1_conv_cube[0][j];
+                                L2_weight_matrix_M[i + (FL2_srt_size * FL2_srt_size)*j][k] += L2_change_weight_M[i + (FL2_srt_size * FL2_srt_size)*j][k];
+                            }
                         }
                     }
                 }
@@ -2320,24 +2327,27 @@ int main()
                     }
                 }
 
-                ///make the backpropagation
-                ///First update the bias weights
-                for(int k=0; k<L3_conv_depth; k++)
+                if(comon_func_Obj1.started == 1)
                 {
-                    /// **** update tied weight regarding delta
-                    L3_change_weight_M[FL3_size][k] = L3_LearningRate * L3_conv_cube[0][k] * bias_delta + L3_Momentum * L3_change_weight_M[FL3_size][k];///hidden_node = L1_conv_cube[0][j];
-                    L3_weight_matrix_M[FL3_size][k] += L3_change_weight_M[FL3_size][k];
-                }
-                for(int k=0; k<L3_conv_depth; k++)
-                {
-                    for(int j=0; j<FL3_depth; j++)
+                    ///make the backpropagation
+                    ///First update the bias weights
+                    for(int k=0; k<L3_conv_depth; k++)
                     {
-                        for(int i=0; i<(FL3_srt_size * FL3_srt_size); i++)
+                        /// **** update tied weight regarding delta
+                        L3_change_weight_M[FL3_size][k] = L3_LearningRate * L3_conv_cube[0][k] * bias_delta + L3_Momentum * L3_change_weight_M[FL3_size][k];///hidden_node = L1_conv_cube[0][j];
+                        L3_weight_matrix_M[FL3_size][k] += L3_change_weight_M[FL3_size][k];
+                    }
+                    for(int k=0; k<L3_conv_depth; k++)
+                    {
+                        for(int j=0; j<FL3_depth; j++)
                         {
+                            for(int i=0; i<(FL3_srt_size * FL3_srt_size); i++)
+                            {
 
-                            /// **** update tied weight regarding delta
-                            L3_change_weight_M[i + (FL3_srt_size * FL3_srt_size)*j][k] = L3_LearningRate * L3_conv_cube[0][k] * (L3_autoenc_delta[i][j]) + L3_Momentum * L3_change_weight_M[i + (FL3_srt_size * FL3_srt_size)*j][k];///hidden_node = L3_conv_cube[0][j];
-                            L3_weight_matrix_M[i + (FL3_srt_size * FL3_srt_size)*j][k] += L3_change_weight_M[i + (FL3_srt_size * FL3_srt_size)*j][k];
+                                /// **** update tied weight regarding delta
+                                L3_change_weight_M[i + (FL3_srt_size * FL3_srt_size)*j][k] = L3_LearningRate * L3_conv_cube[0][k] * (L3_autoenc_delta[i][j]) + L3_Momentum * L3_change_weight_M[i + (FL3_srt_size * FL3_srt_size)*j][k];///hidden_node = L3_conv_cube[0][j];
+                                L3_weight_matrix_M[i + (FL3_srt_size * FL3_srt_size)*j][k] += L3_change_weight_M[i + (FL3_srt_size * FL3_srt_size)*j][k];
+                            }
                         }
                     }
                 }
@@ -2863,11 +2873,13 @@ int main()
                         }
 
                     }
-
-
                     ///********************************************************************************
                     ///********* End Do Convolute L2 first step for fine tune weight update ***********
                     ///********************************************************************************
+                    /******************************************************************
+                    * End Update L2 weights fine tune Supervised learning
+                    ******************************************************************/
+
                 }
                 else
                 {
@@ -2922,56 +2934,6 @@ int main()
                         }
                     }
                 }
-
-                /******************************************************************
-                * Update L2 weights fine tune Supervised learning
-                ******************************************************************/
-                /*
-                            for(int i=0; i<(Hidden_nodes*4); i++)
-                            {
-                                for(int j=0; j<L2_Hidden_nodes; j++)
-                                {
-                                    if(started == 1)
-                                    {
-                                        /// **** update tied weight regarding supervised backprop delta
-                                        L2_change_weight_M[i][j] = supervised_L2_LearningRate * hidden_node[i%Hidden_nodes] * L2_hid_node_delta[j] + supervised_L2_Momentum * L2_change_weight_M[i][j];
-                                        L2_weight_matrix_M[i][j] += L2_change_weight_M[i][j];
-                                    }
-                                }
-                            }
-
-                            ///Update bias node
-                            for(int j=0; j<L2_Hidden_nodes; j++)
-                            {
-                                if(started == 1)
-                                {
-                                       ///Update bias node
-                                        L2_change_bias_weight_in2hid[j] = supervised_L2_LearningRate * Bias_level *  L2_hid_node_delta[j] + supervised_L2_Momentum * L2_change_bias_weight_in2hid[j];
-                                        L2_bias_weight_in2hid[j] += L2_change_bias_weight_in2hid[j];
-                                }
-                            }
-                            ///------------------
-                            ///First update the bias weights
-                            for(int k=0; k<L2_conv_depth; k++)
-                            {
-                                /// **** update tied weight regarding delta
-                                L2_change_weight_M[FL2_size][k] = L2_LearningRate * L2_conv_cube[0][k] * bias_delta + L2_Momentum * L2_change_weight_M[FL2_size][k];///hidden_node = L1_conv_cube[0][j];
-                                L2_weight_matrix_M[FL2_size][k] += L2_change_weight_M[FL2_size][k];
-                            }
-                            for(int k=0; k<L2_conv_depth; k++)
-                            {
-                                for(int j=0; j<FL2_depth; j++)
-                                {
-                                    for(int i=0; i<(FL2_srt_size * FL2_srt_size); i++)
-                                    {
-                                        /// **** update tied weight regarding delta
-                                        L2_change_weight_M[i + (FL2_srt_size * FL2_srt_size)*j][k] = L2_LearningRate * L2_conv_cube[0][k] * (L2_autoenc_delta[i][j]) + L2_Momentum * L2_change_weight_M[i + (FL2_srt_size * FL2_srt_size)*j][k];///hidden_node = L1_conv_cube[0][j];
-                                        L2_weight_matrix_M[i + (FL2_srt_size * FL2_srt_size)*j][k] += L2_change_weight_M[i + (FL2_srt_size * FL2_srt_size)*j][k];
-                                    }
-                                }
-                            }
-                            ///------------------------
-                */
 ///***********
             }///End if(comon_func_Obj1.started == 1)
         }///End if(fully_conn_backprop == 1)
@@ -3176,7 +3138,7 @@ int main()
         comon_func_Obj1.keyboard_event();///Check keyboard event
         if(comon_func_Obj1.started==0)
         {
-            ///         waitKey(2000);
+            waitKey(3000);
         }
         if(comon_func_Obj1.init_random_fc_weights==1)
         {
@@ -3336,7 +3298,6 @@ int main()
 ///********** End Save fc_output_weight ********************
 
         }///End save Lx
-
     }
     return 0;
 }
