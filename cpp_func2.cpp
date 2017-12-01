@@ -368,7 +368,7 @@ void cpp_func2::keyboard_event(void)
 
             }
 
-            Sleep(8);///time to read
+            Sleep(1);///time to read
 
         }
 }
