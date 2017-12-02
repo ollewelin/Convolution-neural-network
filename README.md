@@ -5,6 +5,7 @@ I done this just for fun for my own to try understand and test the principle of 
 with supervised learning and unsupervied learning. I was use Denoising Autoencoder here used for feature unsupervised learning. 
 A good explanation by this guy: Hugo Larochelle https://www.youtube.com/watch?v=FzS3tMl4Nsc thanks for that! 
 My youtube view of this: https://www.youtube.com/watch?v=Hckvt2WV3Rk
+
 I get about 95.5% accuracy of MNIST test after loog training time, not so impressive but it work at least.
 
 There are 3 different mode you can run this code
