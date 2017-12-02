@@ -9,8 +9,11 @@ My youtube view of this: https://www.youtube.com/watch?v=Hckvt2WV3Rk
 I get about 95.5% accuracy of MNIST test after loog training time, not so impressive but it work at least.
 
 There are 3 different mode you can run this code
+
 #define MNIST
+
 #define IMAGE //2 categories. I was test with 48x48 images in this case but you will set image size and nr of images at start
+
 #define CIFAR 
 
 Dependencies
