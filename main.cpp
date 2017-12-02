@@ -66,16 +66,16 @@ const int pooling  = 4;///maxpooling from 4->1 node. This value is the pooling a
 #endif // USE_MNIST
 #ifdef USE_CIFAR
 int FL1_srt_size = 5;///IMAGE 7, CIFAR 5, MNIST 7 Must be a odd nubmber 1.3.5... Feature1 side size 5 = 5x5 feature patch
-int FL2_srt_size = 3;///IMAGE 7, CIFAR 5, MNIST 7 Must be a odd nubmber 1.3.5... Feature2 side size 5 = 5x5 feature
+int FL2_srt_size = 5;///IMAGE 7, CIFAR 5, MNIST 7 Must be a odd nubmber 1.3.5... Feature2 side size 5 = 5x5 feature
 int FL3_srt_size = 3;///Must be a odd nubmber 1.3.5... Feature2 side size 5 = 5x5 feature
-int L1_conv_depth = 150;///IMAGE 150, CIFAR 75, MNIST 50. L1_conv_depth is the depth of the L1 Convolution cube. This is also the number of Feature on L2.
-int L2_conv_depth = 150;///IMAGE 100, CIFAR 300, MNIST 75 L2_conv_depth is the depth of the L2 Convolution cube. This is also the number of Feature on L3.
+int L1_conv_depth = 75;///IMAGE 150, CIFAR 75, MNIST 50. L1_conv_depth is the depth of the L1 Convolution cube. This is also the number of Feature on L2.
+int L2_conv_depth = 300;///IMAGE 100, CIFAR 300, MNIST 75 L2_conv_depth is the depth of the L2 Convolution cube. This is also the number of Feature on L3.
 int L3_conv_depth = 200;///CIFAR 300, MNIST not used L3_conv_depth is the depth of the L3 Convolution cube. This is also the number of Feature on L3.
 const int connect_fc_to_layer = 2;///2 or 3. L3 Convloution now also implemented. This selector connect_fc_to_layer will connect the fully connected neural network to L2 or L3 conv->pooled data
 const int connect_fc_to_pool_or_conv = 0;///0= will connect (fc) fully connected network to (pool) pooling cube data. 1= will connect (fc) network to (conv) convolution cube data.
-const int L1_stride   = 2;
-const int L2_stride   = 2;
-const int L3_stride   = 2;
+const int L1_stride   = 1;
+const int L2_stride   = 1;
+const int L3_stride   = 1;
 const int pooling  = 4;///maxpooling from 4->1 node. This value is the pooling area
 #endif // USE_CIFAR
 ///******** End Feature size and depth settings ***********************
@@ -172,14 +172,14 @@ int tune_L3_moment_int =0;///100 = 0.0999f
 #endif // USE_MNIST
 #ifdef USE_CIFAR
 int L1_noise_int = 25;///25 = 25%
-int L2_noise_int = 1;
+int L2_noise_int = 5;
 int L3_noise_int = 1;
-int tune_L1_int = 100;///20 = 0.002f
-int tune_L2_int = 100;///2 = 0.0002f
+int tune_L1_int = 50;///20 = 0.002f
+int tune_L2_int = 5;///2 = 0.0002f
 int tune_L3_int = 80;///2 = 0.0002f
-int tune_L1_moment_int =20;///1000 = 0.999f
-int tune_L2_moment_int =10;///100 = 0.0999f
-int tune_L3_moment_int =10;///100 = 0.0999f
+int tune_L1_moment_int =0;///1000 = 0.999f
+int tune_L2_moment_int =0;///100 = 0.0999f
+int tune_L3_moment_int =0;///100 = 0.0999f
 #endif // USE_CIFAR
 
 ///int target_low_value_int = 5;///45 = 0.45f
