@@ -22,3 +22,6 @@ I was use this way to install OpenCV
 http://milq.github.io/install-opencv-ubuntu-debian/
 
 2. MNIST data set download to program root folder. http://yann.lecun.com/exdb/mnist/
+
+3. replace the "." with a "-" in all the 4 file names from MNIST "t10k-images.idx3-ubyte" to "t10k-images-idx3-ubyte" and so on
+my program ask for t10k-images-idx3-ubyte file name
