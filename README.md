@@ -18,6 +18,7 @@ There are 3 different mode you can run this code
 
 Dependencies
 1. install cmake for use the of the CMakeLists.txt
+
 $sudo apt-get install cmake
 
 2. OpenCV
