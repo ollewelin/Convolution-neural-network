@@ -16,16 +16,21 @@ There are 3 different mode you can run this code
 
 #define CIFAR 
 
-Dependencies
-1. install cmake for use the of the CMakeLists.txt
+Dependencies:
 
-$sudo apt-get install cmake
-
-2. OpenCV
+1. OpenCV
 I was use this way to install OpenCV
 http://milq.github.io/install-opencv-ubuntu-debian/
 
-3. MNIST data set download to program root folder. http://yann.lecun.com/exdb/mnist/
+2. MNIST data set download to program root folder. http://yann.lecun.com/exdb/mnist/
 
-4. replace the "." with a "-" in all the 4 file names from MNIST "t10k-images.idx3-ubyte" to "t10k-images-idx3-ubyte" and so on
+3. replace the "." with a "-" in all the 4 file names from MNIST "t10k-images.idx3-ubyte" to "t10k-images-idx3-ubyte" and so on
 my program ask for t10k-images-idx3-ubyte file name
+
+Compile by use make and Makefile
+
+$ make
+
+run
+
+$ ./exe_CNN
