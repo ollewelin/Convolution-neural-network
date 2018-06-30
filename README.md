@@ -10,11 +10,11 @@ I get about 95.5% accuracy of MNIST test after loog training time, not so impres
 
 There are 3 different mode you can run this code
 
-#define MNIST
+`#define MNIST
 
 #define IMAGE //2 categories. I was test with 48x48 images in this case but you will set image size and nr of images at start
 
-#define CIFAR 
+#define CIFAR` 
 
 Dependencies:
 
@@ -29,8 +29,8 @@ my program ask for t10k-images-idx3-ubyte file name
 
 Compile by use make and Makefile
 
-$ make
+`$ make`
 
 run
 
-$ ./exe_CNN
+`$ ./exe_CNN`
