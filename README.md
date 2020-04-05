@@ -1,5 +1,5 @@
 # Convolution-neural-network C++
-I am only a novice at C/C++ programming (at this time when I put this here). 2020 I am not proud of this quick and dirty amature code. 
+I am only a novice at C/C++ programming (at the time when I put this here). 2020 I am not proud of this quick and dirty amature code. 
 This is my own test of Convolution neural network use OpenCV. With 2 or 3 Layer feature and Autoencoder. Deconvolution L3 don't work out probably bug i Layer 3. 
 I done this just for fun for my own to try understand and test the principle of Convolution Neural Network 
 with supervised learning and unsupervied learning. I was use Denoising Autoencoder here used for feature unsupervised learning. 
