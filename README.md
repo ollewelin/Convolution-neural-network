@@ -19,9 +19,49 @@ There are 3 different mode you can run this code
 
 Dependencies:
 
-1. OpenCV
-I was use this way to install OpenCV
-http://milq.github.io/install-opencv-ubuntu-debian/
+1. Install OpenCV
+
+To install OpenCV
+first install 
+cmake
+
+`$ sudo apt-get update`
+
+`$ wget https://github.com/Kitware/CMake/releases/download/v3.15.2/cmake-3.15.2.tar.gz`
+
+`$ tar -zxvf cmake-3.15.2.tar.gz`
+
+`$ cd cmake-3.15.2`
+
+`$ ./bootstrap`
+
+`$ make`
+
+`$ sudo make install`
+
+`$ cmake --version`
+
+Then Install OpenCV
+download:
+
+https://github.com/opencv/opencv
+
+unzip opencv-master.zip
+
+change directory to unziped folder
+
+`$ mkdir build`
+
+`$ cd build`
+
+Update for OpenCV 4.3.0
+
+`/build$ sudo cmake -D OPENCV_GENERATE_PKGCONFIG=ON ..` 
+
+`/build$ sudo make`
+
+`/build$ sudo make install`
+
 
 2. MNIST data set download to program root folder. http://yann.lecun.com/exdb/mnist/
 
