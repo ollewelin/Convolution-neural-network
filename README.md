@@ -54,14 +54,20 @@ change directory to unziped folder
 
 `$ cd build`
 
-Update for OpenCV 4.3.0
-
 `/build$ sudo cmake -D OPENCV_GENERATE_PKGCONFIG=ON ..` 
 
 `/build$ sudo make`
 
 `/build$ sudo make install`
 
+Uninstall Note: If you have an old OpenCV installed with cmake and a /build folder then:
+Uninstall old opencv (in example opencv 3.1)
+
+`$ cd build`
+
+`/build$ sudo make uninstall`
+
+Then delete old opencv-master folder and reinstall as above.
 
 2. MNIST data set download to program root folder. http://yann.lecun.com/exdb/mnist/
 
