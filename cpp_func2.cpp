@@ -206,8 +206,8 @@ void cpp_func2::print_help(void)
             printf("Hit <C> TOGGLE Autoencoder L2 ON/OFF\n");
             printf("Hit <D> TOGGLE Convolution L1 ON/OFF\n");
             printf("Hit <E> TOGGLE Convolution L2 ON/OFF\n");
-            printf("Hit <F> TOGGLE Autoencoder L3 ON/OFF\n");
-            printf("Hit <G> TOGGLE Convolution L3 ON/OFF\n");
+            printf("Hit <F> ! Not Working TOGGLE Autoencoder L3 ON/OFF\n");
+            printf("Hit <G> ! Not Working TOGGLE Convolution L3 ON/OFF\n");
             printf("Hit <H> TOGGLE full_conn_backprop start/stop logistic regression learning\n");
             printf("Hit <I> TOGGLE Fine tune Feature L2 from fc backprop (will lock fc weight updates) full_conn_backprop must be ON \n");
             printf("Hit <J> \n");
@@ -300,14 +300,17 @@ void cpp_func2::keyboard_event(void)
             }
            if(keyboard== 'F' || keyboard== 'f')
             {
+
                 if(L3_autoencoder_ON==0)
                 {
-                    L3_autoencoder_ON=1;
+               //     L3_autoencoder_ON=1;
+                    
                 }
                 else
                 {
                     L3_autoencoder_ON=0;
                 }
+                printf(" !  'F' Not working \n");
                 printf("L3_autoencoder_ON=%d\n", L3_autoencoder_ON);
             }
 
@@ -315,12 +318,13 @@ void cpp_func2::keyboard_event(void)
             {
                 if(L3_convolution_ON==0)
                 {
-                    L3_convolution_ON=1;
+                  //  L3_convolution_ON=1;
                 }
                 else
                 {
                     L3_convolution_ON=0;
                 }
+                printf(" !  'G' Not working \n");
                 printf("L3_convolution_ON=%d\n", L3_convolution_ON);
             }
 
