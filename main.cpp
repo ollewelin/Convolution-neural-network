@@ -18,6 +18,8 @@ using namespace cv;
 #include "cpp_func.hpp"
 #include "cpp_func2.hpp"
 #include <time.h> ///usleep()
+
+#include <opencv2/core/types_c.h>//need for opencv4
 ///Add standard deviation of the all data after each Relu and use that value as the noise amplitude to each Autoencoder
 #define USE_STD_DEVIATION_FOR_NOISE_AMPLITUDE
 #ifdef USE_STD_DEVIATION_FOR_NOISE_AMPLITUDE
@@ -403,6 +405,9 @@ int get_MNIST_lable_file_size(void)
 
 int main()
 {
+        //print opencv version
+    printf("opencv version: %d.%d.%d\n",CV_VERSION_MAJOR,CV_VERSION_MINOR,CV_VERSION_REVISION);
+
     createTrackbars();
     printf("auto_save_ON =%d\n", auto_save_ON);
 
@@ -2949,11 +2954,11 @@ int main()
         if(fc_output_node[0]> 0.5f)
         {
 
-            cv::putText(labeling, IMAGE_cat_pos, cvPoint(15,60), CV_FONT_HERSHEY_PLAIN, 4, cvScalar(0,255,0),3);
+            cv::putText(labeling, IMAGE_cat_pos, cvPoint(15,60), FONT_HERSHEY_PLAIN, 4, cvScalar(0,255,0),3);
         }
         else
         {
-            cv::putText(labeling, IMAGE_cat_neg, cvPoint(15,60), CV_FONT_HERSHEY_PLAIN, 4, cvScalar(0,0,255),3);
+            cv::putText(labeling, IMAGE_cat_neg, cvPoint(15,60), FONT_HERSHEY_PLAIN, 4, cvScalar(0,0,255),3);
         }
 
 #else
@@ -2976,7 +2981,7 @@ int main()
         //CvPoint num_pos = (15,100);
         *It = Highest_rate+48;
         labeling.setTo(cv::Scalar(50,0,0));
-        cv::putText(labeling, highest, cvPoint(15,60), CV_FONT_HERSHEY_PLAIN, 4, cvScalar(0,255,0),3);
+        cv::putText(labeling, highest, cvPoint(15,60), FONT_HERSHEY_PLAIN, 4, cvScalar(0,255,0),3);
 #endif //
 //void putText(Mat& img, const string& text, Point org, int fontFace, double fontScale, Scalar color, int thickness=1, int lineType=8, bool bottomLeftOrigin=false )¶
         imshow("lable", labeling);
