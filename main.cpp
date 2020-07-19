@@ -1,3 +1,5 @@
+#define USE_SOFTMAX //If this is enabled softmax instead of sigmoid used at last layer
+
 ///2017-11-30 Add fine tune L2 through backpropagation from fc fully connected network. Yet only test with L2_pool_cobe connected to fc, not tested unpooled connectiotion to fc
 ///Now also Tested on PC with ubuntu
 ///Test here with MNIST dataset
@@ -135,11 +137,20 @@ int verification = 0;
 float Error_level=0.0f;
 const float fc_start_weight_noise_range = 0.15f;//+/- Weight startnoise range
 
+
+#ifdef USE_SOFTMAX
 float fc_LearningRate = 0.01f;///0.025f
+float fc_LearningRate_h2o = 0.01f;
+#else
+float fc_LearningRate = 0.01f;///0.025f
+float fc_LearningRate_h2o = 0.01f;
+#endif
+
 float fc_Momentum = 0.8;///0.96
 float High_Target_value = 1.0f;
 ///float Low_Target_value = 0.45f;
 float Low_Target_value = 0.5f - (((float)((float)nr_of_hot_target_nodes / (float)fully_out_nodes)) * 0.5f);/// ((float)nr_of_hot_target_nodes / (float)fully_out_nodes)) / 2.0f;///
+
 int Learning_fc = 1;///ON / OFF regarding fine tune Features or Verfication test running
 int Training_fc = 1;///...
 
@@ -467,6 +478,14 @@ int main()
     int FL1_depth = 3;///BRG
     int FL1_size = FL1_srt_size * FL1_srt_size * FL1_depth;///The size of one Feature FL1
 
+#ifdef USE_SOFTMAX
+printf("Use SOFTMAX mode \n");
+Low_Target_value = 0.0f;
+High_Target_value = 1.0f;
+    printf("High_Target_value %f\n", High_Target_value);
+    printf("Low_Target_value %f\n", Low_Target_value);
+
+#endif
 
 #ifdef USE_MNIST
     int L1_conv_hight = MNIST_height - FL1_srt_size + 1;///No padding. This is the hight of the L1 Convolution cube.
@@ -740,6 +759,10 @@ int main()
     dropoutHidden = new int[fully_hidd_nodes];///data 0 normal fc_hidden_node. 1= dropout this fc_hidden_node this training turn.
     fc_input_node = new float[fc_input_NODES];///fc means fully connected. sigmoid of this L2_hidden_node = new float[L2_fc_input_NODES];
     fc_hidden_node = new float[fully_hidd_nodes];///
+#ifdef USE_SOFTMAX    
+    float *fc_digits_softmax_exp;
+    fc_digits_softmax_exp = new float[fully_out_nodes];
+#endif
     fc_output_node = new float[fully_out_nodes];
     fc_target_node = new float[fully_out_nodes];///The target value from lable file should be put in this
     fc_output_delta = new float[fully_out_nodes];
@@ -2679,10 +2702,10 @@ int main()
             for(int n=0; n<fully_out_nodes; n++)
             {
 #ifdef USE_MNIST
-                if(n == ((int) MNIST_lable[MNIST_nr]))
+                        if(n == ((int) MNIST_lable[MNIST_nr]))
 #endif // USE_MNIST
 #ifdef USE_CIFAR
-                    if(n == ((int) CIFAR_data[(CIFAR_nr*CIFAR_row_size)]))
+                        if(n == ((int) CIFAR_data[(CIFAR_nr*CIFAR_row_size)]))
 #endif // USE_CIFAR
 #ifdef USE_IMAGE
                         if(n == toggle_pos_neg)
@@ -2701,7 +2724,55 @@ int main()
 ///***************************************************************************
 ///*************** Feed forward fc_hidden_node[] to fc_output_node[] *********
 ///***************************************************************************
+#ifdef USE_SOFTMAX
+            float sum_softmax_e_digits = 0.0f;//first clear sum of all exp(Accum)
+            float invers_sum_softmax_e_digits = 0.0f;// (1 / sum_softmax_e_digits) for speed up use * instead of / later and with 0 div protection 
+            for(int j=0; j<fully_out_nodes; j++)
+            {
+                Accum = fc_output_weight[fully_hidd_nodes][j] * Bias_level;///Begin with the Bias node as the start value
+                for(int i=0; i<fully_hidd_nodes; i++)
+                {
+                    Accum += fc_output_weight[i][j] * fc_hidden_node[i];///
+                }
+                fc_digits_softmax_exp[j] = exp(Accum);//Store to speed up, only to save calculation time of e later
+                sum_softmax_e_digits += fc_digits_softmax_exp[j];//sum up all exp(digits) 
+            }
 
+            //invers sum_softmax_e_digits to speed up use * instead of / in loop,  and 0 div protection 
+            if(sum_softmax_e_digits == 0.0f){
+                //0 div protection
+                invers_sum_softmax_e_digits = 10000000.0f ;}
+            else{
+                invers_sum_softmax_e_digits = 1.0f / sum_softmax_e_digits;}
+            
+            for(int j=0; j<fully_out_nodes; j++)
+            {
+                fc_output_node[j] = fc_digits_softmax_exp[j] * invers_sum_softmax_e_digits;// mathematics is exp(this_node)/ Sum of exp(all_nodes)
+                //but * invers_sum_softmax_e_digits is faster then / and protected agians 0 div 
+                if(comon_func_Obj1.started == 0 && enable_print_nodes==1)
+                {
+                    printf("fc_output_node (softmax) [%d] = %f\n",j, fc_output_node[j]);
+                }
+                fc_output_delta[j] = fc_target_node[j] - fc_output_node[j];// derivetives
+               if(fc_target_node[j] == 0.0f){
+                   //Target = 0
+                   Error_level += - (fc_output_delta[j]);
+               }
+               else{ //Target = 1
+                   Error_level += fc_output_delta[j];
+               }
+               printf("fc_output_delta[%d] = %f\n" , j, fc_output_delta[j]);
+            }
+
+            if(fully_out_nodes > 0){
+                Error_level = Error_level / (float)fully_out_nodes;
+            }
+            else{
+                printf("Error, fully_out_nodes = 0, exit program\n");
+                exit(0);
+            }
+            
+#else
             for(int j=0; j<fully_out_nodes; j++)
             {
                 Accum = fc_output_weight[fully_hidd_nodes][j] * Bias_level;///Begin with the Bias node as the start value
@@ -2713,16 +2784,18 @@ int main()
                 fc_output_delta[j] = (fc_target_node[j] - fc_output_node[j]) * fc_output_node[j] * (1.0f - fc_output_node[j]);
 
 ///                fc_output_delta[j] = (fc_softmax_out_delta[j]) * fc_output_node[j] * (1.0f - fc_output_node[j]);
-
                 if(comon_func_Obj1.started == 0 && enable_print_nodes==1)
                 {
                     //          printf("debug_counter %d training target %d j = %d\n", debug_counter, training_image, j);
-                    printf("fc_output_node[%d] = %f\n",j, fc_output_node[j]);
+                    printf("fc_output_node (sigmoid) [%d] = %f\n",j, fc_output_node[j]);
                     printf("fc_target_node[%d] = %f\n", j, fc_target_node[j]);
                     //  printf("fc_output_delta[j] = %f\n", fc_output_delta[j]);
                 }
                 Error_level += 0.5 * (fc_target_node[j] - fc_output_node[j]) * (fc_target_node[j] - fc_output_node[j]);///
+                printf("fc_output_delta[%d] = %f\n" , j, fc_output_delta[j]);
             }
+
+#endif //USE_SOFTMAX
             if(comon_func_Obj1.started == 0 || print_only_100==0)
             {
                 ///  printf("CIFAR lable %d\n", CIFAR_data[(CIFAR_nr*CIFAR_row_size)]);
@@ -2927,13 +3000,13 @@ int main()
 
                     for(int i = 0 ; i < fully_out_nodes ; i++ )
                     {
-                        fc_change_output_weight[fully_hidd_nodes][i] = fc_LearningRate * Bias_level * fc_output_delta[i] + fc_Momentum * fc_change_output_weight[fully_hidd_nodes][i] ;///Begin with update Bias change weights
+                        fc_change_output_weight[fully_hidd_nodes][i] = fc_LearningRate_h2o * Bias_level * fc_output_delta[i] + fc_Momentum * fc_change_output_weight[fully_hidd_nodes][i] ;///Begin with update Bias change weights
                         fc_output_weight[fully_hidd_nodes][i] += fc_change_output_weight[fully_hidd_nodes][i];///Begin with update Bias weights
                         for(int j = 0 ; j < fully_hidd_nodes ; j++ )
                         {
                             if(dropoutHidden[j] == 0)
                             {
-                                fc_change_output_weight[j][i] = fc_LearningRate * fc_hidden_node[j] * fc_output_delta[i] + fc_Momentum * fc_change_output_weight[j][i];
+                                fc_change_output_weight[j][i] = fc_LearningRate_h2o * fc_hidden_node[j] * fc_output_delta[i] + fc_Momentum * fc_change_output_weight[j][i];
                                 fc_output_weight[j][i] += fc_change_output_weight[j][i] ;
                             }
                         }
