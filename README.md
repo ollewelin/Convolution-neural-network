@@ -41,7 +41,7 @@ cmake
 
 `$ cmake --version`
 
-Then Install OpenCV
+Then Install OpenCV4
 download:
 
 https://github.com/opencv/opencv
@@ -67,7 +67,7 @@ Uninstall old opencv (in example opencv 3.1)
 
 `/build$ sudo make uninstall`
 
-Then delete old opencv-master folder and reinstall as above.
+Then delete old opencv-master folder and install with OpenCV4 as above.
 
 2. MNIST data set download to program root folder. http://yann.lecun.com/exdb/mnist/
 
