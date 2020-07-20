@@ -139,8 +139,8 @@ const float fc_start_weight_noise_range = 0.15f;//+/- Weight startnoise range
 
 
 #ifdef USE_SOFTMAX
-float fc_LearningRate = 0.01f;///0.025f
-float fc_LearningRate_h2o = 0.01f;
+float fc_LearningRate = 0.001f;///0.025f
+float fc_LearningRate_h2o = 0.001f;
 #else
 float fc_LearningRate = 0.01f;///0.025f
 float fc_LearningRate_h2o = 0.01f;
