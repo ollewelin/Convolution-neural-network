@@ -49,6 +49,7 @@ class cpp_func2
         int Start_Visualize_L3=0;
         int init_random_fc_weights=0;
         int full_conn_backprop=0;
+        int validation=0;
         virtual ~cpp_func2();
     protected:
     private:

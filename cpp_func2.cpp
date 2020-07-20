@@ -215,6 +215,7 @@ void cpp_func2::print_help(void)
             printf("Hit <L> \n");
             printf("Hit <M> Clear fully connected weights with random data init_random_fc_weights\n");
             printf("Hit <N> Visualize L3 Patches\n");
+            printf("Hit <V> Validation, no training print prediction probabilety only (high speed)\n");
 }
 
 void cpp_func2::keyboard_event(void)
@@ -236,6 +237,12 @@ void cpp_func2::keyboard_event(void)
                 {
                     started = 1;
                     printf("Start training\n");
+                    if(validation==1)
+                    {
+                        validation=0;
+                        printf("Stop validation =%d\n", validation);
+                    }
+                    
                 }
             }
 
@@ -366,7 +373,20 @@ void cpp_func2::keyboard_event(void)
                 printf("finetune=%d\n", finetune);
             }
 
-           if(keyboard== 'M' || keyboard== 'm')
+            if(keyboard== 'V' || keyboard== 'v')
+            {
+                if(validation==0)
+                {
+                    validation=1;
+                    started = 0;
+                    printf("Stop training\n");
+                    printf("Training stop now only feed forward\n");
+
+                }
+                else
+                printf("Validation =%d\n", validation);
+            }
+            if(keyboard== 'M' || keyboard== 'm')
             {
                 init_random_fc_weights = 1;
 

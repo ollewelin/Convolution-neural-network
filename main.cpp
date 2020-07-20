@@ -2753,7 +2753,7 @@ High_Target_value = 1.0f;
             {
                 fc_output_node[j] = fc_digits_softmax_exp[j] * invers_sum_softmax_e_digits;// mathematics is exp(this_node)/ Sum of exp(all_nodes)
                 //but * invers_sum_softmax_e_digits is faster then / and protected agians 0 div 
-                if(comon_func_Obj1.started == 0 && enable_print_nodes==1)
+                if(comon_func_Obj1.started == 0 && enable_print_nodes==1 && comon_func_Obj1.validation == 0)
                 {
                     printf("fc_output_node (softmax) [%d] = %f\n",j, fc_output_node[j]);
                 }
@@ -2765,7 +2765,7 @@ High_Target_value = 1.0f;
                else{ //Target = 1
                    Error_level += fc_output_delta[j];
                }
-               printf("fc_output_delta[%d] = %f\n" , j, fc_output_delta[j]);
+               //printf("fc_output_delta[%d] = %f\n" , j, fc_output_delta[j]);
             }
 
             if(fully_out_nodes > 0){
@@ -2803,8 +2803,8 @@ High_Target_value = 1.0f;
             if(comon_func_Obj1.started == 0 || print_only_100==0)
             {
                 ///  printf("CIFAR lable %d\n", CIFAR_data[(CIFAR_nr*CIFAR_row_size)]);
-
-                printf("Error_level fc =%f\n", Error_level);
+                if(comon_func_Obj1.validation==0){
+                printf("Error_level fc =%f\n", Error_level);}
                 if(auto_save_ON==1)
                 {
                     auto_save_counter++;
@@ -3220,7 +3220,10 @@ High_Target_value = 1.0f;
         comon_func_Obj1.keyboard_event();///Check keyboard event
         if(comon_func_Obj1.started==0)
         {
-            waitKey(3000);
+            if(comon_func_Obj1.validation==0)
+            {
+                waitKey(3000);
+            }
         }
         if(comon_func_Obj1.init_random_fc_weights==1)
         {
