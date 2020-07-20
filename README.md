@@ -83,3 +83,7 @@ Compile by use make and Makefile
 run
 
 `$ ./exe_CNN`
+
+Start fine tune L2 conv layer
+![](Screenshot_3_I_command_finetune_L2.png)
+
