@@ -2574,6 +2574,7 @@ High_Target_value = 1.0f;
 ///-------------------
         if(fully_conn_backprop == 1) /// object... .full_conn_backprop
         {
+            /*
             if(comon_func_Obj1.finetune==1)
             {
                 Learning_fc = 0;///Lock fc when finetune last layer of features
@@ -2583,6 +2584,9 @@ High_Target_value = 1.0f;
             {
                 Learning_fc = Training_fc;/// Do weight update of (fc) fully connected network if not finetune feature throue backprop or running with verify test set
             }
+            */
+            Learning_fc = Training_fc;/// Do weight update of (fc) fully connected network if not finetune feature throue backprop or running with verify test set
+
 ///***********************************************************************************************************************************
 ///***********************************************************************************************************************************
 ///********************************** Supervised Learning Logistic regression ********************************************************
