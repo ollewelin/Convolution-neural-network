@@ -85,6 +85,9 @@ run
 
 `$ ./exe_CNN`
 
+Deconvoluted L2 layer feature.
+![](cloned_sq_visualize_L2toL1%20(copy).JPG)
+
 Start fine tune L2 conv layer
 ![](Screenshot_3_I_command_finetune_L2.png)
 
