@@ -1,5 +1,6 @@
 # Convolution-neural-network C++
-I am only a novice at C/C++ programming (at the time 2017). 
+Warning Skunky Obsolete code. There is also bugs if you change feature size from 7 to 5 seg fault will occure some pointer going wild out in neverland probably. I will not take the time to fix this or investigate in this. Don't use this code. Only some insperations.
+I was only a novice at C++ programming at the time 2017. 
 This is my own test of Convolution neural network use OpenCV. With 2 or 3 Layer feature and Autoencoder. Deconvolution L3 don't work out probably bug i Layer 3. 
 I done this just for fun for my own to try understand and test the principle of Convolution Neural Network 
 with supervised learning and unsupervied learning. I was use Denoising Autoencoder here used for feature unsupervised learning. 
