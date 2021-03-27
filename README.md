@@ -76,10 +76,10 @@ Then delete old opencv-master folder and install with OpenCV4 as above.
 
 2. Auto download MNIST option new 2021-mars update ( MNIST data set download to program root folder. http://yann.lecun.com/exdb/mnist/ )
 
-![]()
+![](Auto_download_MNIST_dataset.png)
 
-3. replace the "." with a "-" in all the 4 file names from MNIST "t10k-images.idx3-ubyte" to "t10k-images-idx3-ubyte" and so on
-my program ask for t10k-images-idx3-ubyte file name
+(3.) OLD (replace the "." with a "-" in all the 4 file names from MNIST "t10k-images.idx3-ubyte" to "t10k-images-idx3-ubyte" and so on
+my program ask for t10k-images-idx3-ubyte file name)
 
 Compile by use make and Makefile
 
