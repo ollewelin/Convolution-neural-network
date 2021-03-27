@@ -10,7 +10,6 @@ A good explanation by this guy: Hugo Larochelle https://www.youtube.com/watch?v=
 My youtube view of this: https://www.youtube.com/watch?v=Hckvt2WV3Rk
 
 I get about 95.5% accuracy of MNIST test after loog training time, not so impressive but it work at least.
-One thing how missing in the rush of this test program is the Soft Max layer at the end of fully connected layer. (Soft Max should Always be used if there is more then 1 output neuron, in this case with out the softmax the training will reach a platua becuse the total some of the 10 digits will not reach a probability of 1.0)
 
 Update test now with SOFTMAX
 
