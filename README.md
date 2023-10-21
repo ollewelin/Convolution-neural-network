@@ -1,5 +1,9 @@
 # Convolution-neural-network C++
 Warning Skunky Obsolete code.
+
+## Please jump to newer better repo here: 
+## https://github.com/ollewelin/Nerual_Netwok_CPP
+
 Bugg: Finetune feature kernels backpropagation is wrong, need 180 deg turn around feature when backprop the features in fine tune mode. The finetune feature need to change implementation.
 There is also bugs if you change feature size from 7 to 5 seg fault will occure some pointer going wild out in neverland probably. I will not take the time to fix this or investigate in this. Don't use this code. Only some insperations.
 I was only a novice at C++ programming at the time 2017. 
